@@ -14,10 +14,10 @@ rp_module_desc="RetroArch"
 rp_module_menus="2+"
 
 function depends_retroarch() {
-    getDepends libudev-dev libxkbcommon-dev libsdl2-dev libraspberrypi-dev
+    getDepends libudev-dev libsdl2-dev
 
     cat > "/etc/udev/rules.d/99-evdev.rules" << _EOF_
-KERNEL=="event*", NAME="input/%k", MODE="666"
+KERNEL=="event*", NAME="input/%k", MODE="660", GROUP="plugdev"
 _EOF_
     sudo chmod 666 /dev/input/event*
 }
@@ -34,6 +34,7 @@ function sources_retroarch() {
 function build_retroarch() {
     local params=(--disable-x11 --disable-oss --disable-pulse --disable-al --enable-floathard)
     isPlatform "rpi2" && params+=(--enable-neon)
+    isPlatform "xu3" && params+=(--enable-neon --enable-gles)
     ./configure --prefix="$md_inst" ${params[@]}
     make clean
     make

@@ -25,9 +25,10 @@ function sources_emulationstation() {
 
 function build_emulationstation() {
     rpSwap on 512
+    sed -i 's/set(GLSystem "Desktop OpenGL"/set(GLSystem "OpenGL ES"/g' CMakeLists.txt
     cmake . -DFREETYPE_INCLUDE_DIRS=/usr/include/freetype2/
     make clean
-    make
+    make -j6
     rpSwap off
     md_ret_require="$md_build/emulationstation"
 }
@@ -86,11 +87,13 @@ _EOF_
     chmod +x /usr/bin/emulationstation
 
     # make sure that ES has enough GPU memory
-    iniConfig "=" "" /boot/config.txt
-    iniSet "gpu_mem_256" 128
-    iniSet "gpu_mem_512" 256
-    iniSet "gpu_mem_1024" 256
-    iniSet "overscan_scale" 1
+    if isPlatform "rpi" || isPlatform "rpi2"; then
+        iniConfig "=" "" /boot/config.txt
+        iniSet "gpu_mem_256" 128
+        iniSet "gpu_mem_512" 256
+        iniSet "gpu_mem_1024" 256
+        iniSet "overscan_scale" 1
+    fi
 
     mkdir -p "/etc/emulationstation"
 

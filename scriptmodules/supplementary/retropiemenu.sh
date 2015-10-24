@@ -24,12 +24,10 @@ function configure_retropiemenu()
     mkdir -p "$rpdir"
 
     files=(
-        'raspiconfig.rp'
         'rpsetup.rp'
         'configedit.rp'
         'retroarch.rp'
         'audiosettings.rp'
-        'dispmanx.rp'
         'retronetplay.rp'
         'splashscreen.rp'
         'filemanager.rp'
@@ -49,10 +47,6 @@ function configure_retropiemenu()
 <?xml version="1.0"?>
 <gameList>
     <game>
-        <path>$rpdir/raspiconfig.rp</path>
-        <name>Raspberry Pi configuration tool raspi-config</name>
-    </game>
-    <game>
         <path>$rpdir/rpsetup.rp</path>
         <name>RetroPie-Setup</name>
     </game>
@@ -71,10 +65,6 @@ function configure_retropiemenu()
     <game>
         <path>$rpdir/audiosettings.rp</path>
         <name>Configure audio settings</name>
-    </game>
-    <game>
-        <path>$rpdir/dispmanx.rp</path>
-        <name>Enable/Disable dispmanx SDL driver for SDL1.x emulators</name>
     </game>
     <game>
         <path>$rpdir/retronetplay.rp</path>

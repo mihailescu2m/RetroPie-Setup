@@ -50,7 +50,9 @@ function install_shares_samba() {
     add_share_samba "roms" "$romdir"
     add_share_samba "bios" "$home/RetroPie/BIOS"
     add_share_samba "configs" "$configdir"
-    add_share_samba "splashscreens" "$datadir/splashscreens"
+    if isPlatform "rpi1" || isPlatform "rpi2"; then
+        add_share_samba "splashscreens" "$datadir/splashscreens"
+    fi
     restart_samba_samba
 }
 

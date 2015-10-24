@@ -204,7 +204,10 @@ function getDepends() {
             continue
         fi
         if [[ "$required" == "libsdl2-dev" ]] && ! hasPackage libsdl2-dev $(get_ver_sdl2); then
-            packages+=("$required")
+            if isPlatform "rpi" || isPlatform "rpi2"; then
+                packages+=("$required")
+            fi
+            # we disable SDL2 check for xu3, we assume we have correct SDL package installed
             continue
         fi
         if [[ "$required" == "libraspberrypi-dev" ]] && hasPackage rbp-bootloader-osmc; then
@@ -237,6 +240,10 @@ function getDepends() {
             done
             packages=("${temp[@]}")
         fi
+
+        # TODO:
+        # we need a similar workaround for xu3 to get libsdl2 with mali backend
+        # for now we assume correct sdl2 libraries are already installed
 
         aptInstall ${packages[@]}
         # check the required packages again rather than return code of apt-get, as apt-get

@@ -25,6 +25,9 @@ function setup_env() {
             BCM2709)
                 __platform="rpi2"
                 ;;
+            ODROID-XU3)
+                __platform="xu3"
+                ;;
         esac
     fi
 
@@ -88,6 +91,11 @@ function get_os_version() {
                     fatalError "Unsupported OS - /etc/debian_version $(cat /etc/debian_version)"
                     ;;
             esac
+        elif [[ "$ver" = "jessie/sid" ]]; then
+            __raspbian_ver=8
+            __raspbian_name="jessie"
+            __has_binaries=0
+            return
         fi
     else
         fatalError "Unsupported OS (no /etc/debian_version)"
@@ -100,7 +108,11 @@ function get_default_gcc() {
             __default_gcc_version="4.7"
             ;;
         8)
-            __default_gcc_version="4.9"
+            if isPlatform "xu3"; then
+                __default_gcc_version="4.8"
+            else
+                __default_gcc_version="4.9"
+            fi
             ;;
         *)
             __default_gcc_version="4.7"
@@ -129,11 +141,13 @@ function set_default_gcc() {
 
 function get_retropie_depends() {
     # add rasberrypi repository if it's missing (needed for libraspberrypi-dev etc) - not used on osmc
-    local config="/etc/apt/sources.list.d/raspi.list"
-    if [[ ! -f "$config" ]] && ! hasPackage rbp-bootloader-osmc; then
-        # add key
-        wget -q http://archive.raspberrypi.org/debian/raspberrypi.gpg.key -O- | apt-key add - >/dev/null
-        echo "deb http://archive.raspberrypi.org/debian/ $__raspbian_name main" >>$config
+    if isPlatform "rpi"|| isPlatform "rpi2"; then 
+        local config="/etc/apt/sources.list.d/raspi.list"
+        if [[ ! -f "$config" ]] && ! hasPackage rbp-bootloader-osmc; then
+            # add key
+            wget -q http://archive.raspberrypi.org/debian/raspberrypi.gpg.key -O- | apt-key add - >/dev/null
+            echo "deb http://archive.raspberrypi.org/debian/ $__raspbian_name main" >>$config
+        fi
     fi
 
     if ! getDepends git dialog wget gcc gcc-$__default_gcc_version g++-$__default_gcc_version build-essential xmlstarlet; then
@@ -169,3 +183,12 @@ function platform_odroid() {
     __default_makeflags=""
     __has_binaries=0
 }
+
+function platform_xu3() {
+    __default_cflags="-O2 -mfpu=neon -march=armv7-a -mfloat-abi=hard"
+    __default_asflags=""
+    __default_makeflags="-j6"
+    __qemu_cpu=cortex-a15
+    __has_binaries=0
+}
+

@@ -14,7 +14,7 @@ rp_module_desc="Playstation emulator - PCSX (arm optimised) port for libretro"
 rp_module_menus="2+"
 
 function depends_lr-pcsx-rearmed() {
-    getDepends libpng12-dev libx11-dev
+    getDepends libpng12-dev
 }
 
 function sources_lr-pcsx-rearmed() {

@@ -18,7 +18,8 @@ function install_scraper() {
     local ver=$(latest_ver_scraper)  
     mkdir -p "$md_build"
     local name="scraper_rpi.zip"
-    isPlatform "rpi2" && name="scraper_rpi2.zip"
+    # scraper for rpi2 should work on xu3 as well
+    (isPlatform "rpi2" || isPlatform "xu3") && name="scraper_rpi2.zip"
     wget -O "$md_build/scraper.zip" "https://github.com/sselph/scraper/releases/download/$ver/$name"
     unzip -o "$md_build/scraper.zip" -d "$md_inst"
     rm -f "$md_build/scraper.zip"

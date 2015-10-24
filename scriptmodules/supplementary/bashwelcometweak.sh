@@ -42,7 +42,8 @@ function retropie_welcome() {
             gpuTempC=${gpuTempC:5:2}
             gpuTempF=$((gpuTempC*9/5+32))
         else
-            gpuTempC=""
+            gpuTempC=${cpuTempC}
+            gpuTempF=${cpuTempF}
         fi
     fi
 
