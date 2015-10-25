@@ -87,7 +87,7 @@ _EOF_
     chmod +x /usr/bin/emulationstation
 
     # make sure that ES has enough GPU memory
-    if isPlatform "rpi" || isPlatform "rpi2"; then
+    if isPlatform "rpi"; then
         iniConfig "=" "" /boot/config.txt
         iniSet "gpu_mem_256" 128
         iniSet "gpu_mem_512" 256

@@ -17,7 +17,7 @@ rp_module_flags="nobin"
 function enable_autostart() {
     if isPlatform "xu3"; then
         # TODO:
-        # xu3 upstart autostart
+        echo xu3 upstart autostart
     else
         if [[ "$__raspbian_ver" -lt "8" ]]; then
             sed -i "s|^1:2345:.*|1:2345:respawn:/bin/login -f $user tty1 </dev/tty1 >/dev/tty1 2>\&1|g" /etc/inittab
@@ -46,7 +46,7 @@ _EOF_
 function disable_autostart() {
     if isPlatform "xu3"; then
         # TODO:
-        # xu3 delete autostart
+        echo xu3 delete autostart
     else
         if [[ "$__raspbian_ver" -lt "8" ]]; then
             sed -i "s|^1:2345:.*|1:2345:respawn:/sbin/getty --noclear 38400 tty1|g" /etc/inittab

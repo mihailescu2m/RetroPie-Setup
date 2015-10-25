@@ -120,10 +120,15 @@ function binaries_setup()
         rp_callModule raspbiantools apt_upgrade
         # force installation of our sdl1 packages as wheezy package may already be installed, and so we always get the latest
         # version. This can be solved later by adding version number checking to the dependency checking
-        rp_callModule sdl1 install_bin
+        if isPlatform "rpi"; then
+            rp_callModule sdl1 install_bin
+        fi
 
         # and force sdl2 - so that any updates will be installed.
-        rp_callModule sdl2 install_bin
+        # TODO: for xu3 this should be enabled as well
+        if isPlatform "rpi"; then
+            rp_callModule sdl2 install_bin
+        fi
 
         # install needed dependencies for all modules with a binary distribution (except for experimental packages)
         for idx in "${__mod_idx[@]}"; do
@@ -135,12 +140,17 @@ function binaries_setup()
         done
 
         # modules that have another binary distribution method (deb etc)
-        rp_callModule stella
-        rp_callModule frotz
-        rp_callModule rpix86
+        # we assume these binaries don't work on xu3 (but they might)
+        if isPlatform "rpi"; then
+            rp_callModule stella
+            rp_callModule frotz
+            rp_callModule rpix86
+        fi
 
         # required supplementary modules 
-        rp_callModule raspbiantools enable_modules
+        if isPlatform "rpi"; then
+            rp_callModule raspbiantools enable_modules
+        fi
         rp_callModule esthemes install_theme carbon HerbFargus
         rp_callModule runcommand install
 

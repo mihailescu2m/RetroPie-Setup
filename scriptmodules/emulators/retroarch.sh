@@ -34,7 +34,7 @@ function sources_retroarch() {
 function build_retroarch() {
     local params=(--disable-x11 --disable-oss --disable-pulse --disable-al --enable-floathard)
     isPlatform "rpi2" && params+=(--enable-neon)
-    isPlatform "xu3" && params+=(--enable-neon --enable-gles)
+    isPlatform "xu3" && params+=(--enable-neon --enable-mali_fbdev --enable-gles)
     ./configure --prefix="$md_inst" ${params[@]}
     make clean
     make

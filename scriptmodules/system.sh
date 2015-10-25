@@ -141,7 +141,7 @@ function set_default_gcc() {
 
 function get_retropie_depends() {
     # add rasberrypi repository if it's missing (needed for libraspberrypi-dev etc) - not used on osmc
-    if isPlatform "rpi"|| isPlatform "rpi2"; then 
+    if isPlatform "rpi"; then 
         local config="/etc/apt/sources.list.d/raspi.list"
         if [[ ! -f "$config" ]] && ! hasPackage rbp-bootloader-osmc; then
             # add key
